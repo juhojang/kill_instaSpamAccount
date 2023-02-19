@@ -17,6 +17,7 @@ setting_x_path='/html/body/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[1]/d
 block_button_x_path='/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div/button[1]'
 real_block_x_path='/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[2]/button[1]'
 cancel_x_path='/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[2]/button'
+search_result_x_path='/html/body/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div[2]/div/div[1]/div/a/div/div[2]/div[1]/div/div'
 
 
 print("id를 입력하세요.")
@@ -41,7 +42,7 @@ list=['','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r'
 for j in list:
     i=1
     while 1:
-        time.sleep(3)
+        time.sleep(1)
     
         try:
             driver.find_element('xpath',search_x_path).click()
@@ -52,16 +53,31 @@ for j in list:
         try:
             print('/html/body/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div[2]/div/div['+str(i)+']/div/a/div')
             driver.find_element('xpath','/html/body/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div[2]/div/div['+str(i)+']/div/a/div').click()
-            time.sleep(3)
+            time.sleep(1)
         except:
             try:
                 driver.find_element('xpath',search_x_path).click()
                 driver.find_element('xpath',search_text_x_path).send_keys("부업"+j)
-                driver.find_element('xpath','/html/body/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div[2]/div/div['+str(i)+']/div/a/div').click()
-                time.sleep(3)
+                isHashTag=driver.find_element('xpath',search_result_x_path).text
+                print(isHashTag[0])
+                if isHashTag[0]=='#':
+                    i=i+1
+                    pass
+                else:
+                    driver.find_element('xpath','/html/body/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div[2]/div/div['+str(i)+']/div/a/div').click()
+                time.sleep(1)
             except:
-                print("there is no list")
-                break
+                fail=driver.find_element('xpath','/html/body/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[1]/div/div[1]/div').text
+                print(fail)
+                if fail=='문제가 발생했습니다':
+                    print("can't get access")
+                    driver.get('https://www.instagram.com')
+                    driver.find_element('xpath','/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/button[2]').click()
+                else:
+                    print("there is no list")
+                    break
+
+                    
         try:
             driver.find_element('xpath',setting_x_path).click()
             driver.find_element('xpath',block_button_x_path).click()
@@ -75,11 +91,8 @@ for j in list:
                 driver.refresh()
             else:
                 driver.refresh()
-                time.sleep(3)
-
     
         except Exception as e:
             print("no setting button")
             i=i+1
-    time.sleep(10)
 
