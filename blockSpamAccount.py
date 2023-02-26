@@ -28,14 +28,9 @@ try :
     driver.find_element('name','username').send_keys(id)
     driver.find_element('name','password').send_keys(password)
     driver.find_element('xpath',login_x_path).click()
-    time.sleep(1)
+    time.sleep(3)
 except UnexpectedAlertPresentException:
     print("hi")
-try:
-    driver.find_element('xpath',login_x_path).click()
-    time.sleep(1)
-except :
-    print("bye")
 
 
 list=['','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
@@ -50,20 +45,14 @@ for j in list:
             driver.find_element('xpath',search_text_x_path).send_keys("부업"+j)
             time.sleep(1)
             isHashTag=driver.find_element('xpath','/html/body/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div[2]/div/div['+str(i)+']/div/a/div/div[2]/div[1]/div/div').text
-            print(i)
-            try:
-                isLocation=driver.find_element('xpath','/html/body/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div[2]/div/div['+str(i)+']/div/a/div/div[1]/div/svg').get_attribute("aria-label")
-                print(isLocation)
-            except:
-                print("cant find location")
-                pass
-            if isHashTag[0]=='#' or isLocation=='위치':
+            if isHashTag[0]=='#':
+                print(i)
                 i=i+1
                 driver.find_element('xpath',search_x_path).click()
                 continue
         except:
-                print("there is no list")
-                break
+            print("there is no list1")
+            pass
     
         try:
             driver.find_element('xpath','/html/body/div[2]/div/div/div/div[1]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div[2]/div/div['+str(i)+']/div/a/div').click()
@@ -80,8 +69,10 @@ for j in list:
                         driver.find_element('xpath','/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/button[2]').click()
                     except:
                         print('there is no common')
+                    i=i+1
+                    continue
                 else:
-                    print("there is no list")
+                    print("there is no list2")
                     break
 
                     
